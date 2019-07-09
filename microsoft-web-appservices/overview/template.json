@@ -3,7 +3,7 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": "{dataSourceName}",
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
@@ -15,8 +15,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "hideControls": false,
-  "id": 26,
+  "id": 63,
+  "iteration": 1562703515497,
   "links": [],
   "panels": [
     {
@@ -25,15 +25,14 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "{dataSourceName}",
-      "description": "",
       "fill": 1,
       "gridPos": {
-        "h": 5,
+        "h": 7,
         "w": 24,
         "x": 0,
         "y": 0
       },
-      "id": 14,
+      "id": 18,
       "legend": {
         "alignAsTable": true,
         "avg": false,
@@ -49,9 +48,8 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "paceLength": 10,
       "percentage": false,
-      "pointradius": 5,
+      "pointradius": 2,
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [],
@@ -61,8 +59,93 @@
       "targets": [
         {
           "appInsights": {
-            "groupBy": "none",
+            "aggOptions": [
+              "avg",
+              "min",
+              "max",
+              "count"
+            ],
+            "aggregation": "max",
+            "alias": "Processor - {{groupbyvalue}}",
+            "groupBy": "customDimensions/QueueName",
+            "groupByOptions": [
+              "performanceCounter/name",
+              "performanceCounter/category",
+              "performanceCounter/counter",
+              "performanceCounter/instance",
+              "operation/name",
+              "operation/synthetic",
+              "operation/syntheticSource",
+              "user/authenticated",
+              "application/version",
+              "client/type",
+              "client/model",
+              "client/os",
+              "client/city",
+              "client/stateOrProvince",
+              "client/countryOrRegion",
+              "client/browser",
+              "cloud/roleName",
+              "cloud/roleInstance",
+              "customDimensions/QueueName"
+            ],
+            "metricName": "performanceCounters/processorCpuPercentage",
+            "rawQuery": false,
+            "rawQueryString": "",
+            "spliton": "",
+            "timeGrain": "1",
+            "timeGrainType": "specific",
+            "timeGrainUnit": "minute",
+            "xaxis": "timestamp",
+            "yaxis": ""
+          },
+          "azureLogAnalytics": {
+            "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
+            "resultFormat": "time_series",
+            "workspace": "f79b2607-d524-41e9-8812-b708a31e0469"
+          },
+          "azureMonitor": {
+            "dimensionFilter": "*",
+            "metricDefinition": "select",
             "metricName": "select",
+            "resourceGroup": "{resourceGroupName}",
+            "resourceName": "{resourceName}",
+            "timeGrain": "auto"
+          },
+          "queryType": "Application Insights",
+          "refId": "B"
+        },
+        {
+          "appInsights": {
+            "aggOptions": [
+              "avg",
+              "min",
+              "max",
+              "count"
+            ],
+            "aggregation": "avg",
+            "groupBy": "none",
+            "groupByOptions": [
+              "performanceCounter/name",
+              "performanceCounter/category",
+              "performanceCounter/counter",
+              "performanceCounter/instance",
+              "operation/name",
+              "operation/synthetic",
+              "operation/syntheticSource",
+              "user/authenticated",
+              "application/version",
+              "client/type",
+              "client/model",
+              "client/os",
+              "client/city",
+              "client/stateOrProvince",
+              "client/countryOrRegion",
+              "client/browser",
+              "cloud/roleName",
+              "cloud/roleInstance"
+            ],
+            "metricName": "performanceCounters/processCpuPercentageTotal",
             "rawQuery": false,
             "rawQueryString": "",
             "spliton": "",
@@ -73,87 +156,29 @@
           "azureLogAnalytics": {
             "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
             "resultFormat": "time_series",
-            "workspace": "046a50f5-b707-4248-b5b5-ada551a71035"
+            "workspace": "f79b2607-d524-41e9-8812-b708a31e0469"
           },
           "azureMonitor": {
-            "aggOptions": [
-              "None",
-              "Average",
-              "Minimum",
-              "Maximum",
-              "Total",
-              "Count"
-            ],
-            "aggregation": "Maximum",
-            "alias": "MAX CPU - Omnius",
-            "dimension": "None",
             "dimensionFilter": "*",
-            "dimensions": [
-              {
-                "text": "None",
-                "value": "None"
-              },
-              {
-                "text": "Instance",
-                "value": "Instance"
-              }
-            ],
-            "metricDefinition": "Microsoft.Web/serverFarms",
-            "metricName": "CpuPercentage",
+            "metricDefinition": "select",
+            "metricName": "select",
             "resourceGroup": "{resourceGroupName}",
             "resourceName": "{resourceName}",
-            "timeGrain": "auto",
-            "timeGrains": [
-              {
-                "text": "auto",
-                "value": "auto"
-              },
-              {
-                "text": "1 minute",
-                "value": "PT1M"
-              },
-              {
-                "text": "5 minutes",
-                "value": "PT5M"
-              },
-              {
-                "text": "15 minutes",
-                "value": "PT15M"
-              },
-              {
-                "text": "30 minutes",
-                "value": "PT30M"
-              },
-              {
-                "text": "1 hour",
-                "value": "PT1H"
-              },
-              {
-                "text": "6 hours",
-                "value": "PT6H"
-              },
-              {
-                "text": "12 hours",
-                "value": "PT12H"
-              },
-              {
-                "text": "1 day",
-                "value": "P1D"
-              }
-            ]
+            "timeGrain": "auto"
           },
-          "queryType": "Azure Monitor",
-          "refId": "A"
+          "hide": true,
+          "queryType": "Application Insights",
+          "refId": "C"
         }
       ],
       "thresholds": [],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "App Service Plan CPU & Memory",
+      "title": "Worker Roles - Max CPU / Minute",
       "tooltip": {
         "shared": true,
-        "sort": 2,
+        "sort": 0,
         "value_type": "individual"
       },
       "transparent": true,
@@ -167,6 +192,7 @@
       },
       "yaxes": [
         {
+          "decimals": null,
           "format": "percent",
           "label": null,
           "logBase": 1,
@@ -175,178 +201,11 @@
           "show": true
         },
         {
+          "decimals": null,
           "format": "percent",
           "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "{dataSourceName}",
-      "fill": 1,
-      "gridPos": {
-        "h": 9,
-        "w": 24,
-        "x": 0,
-        "y": 5
-      },
-      "id": 3,
-      "legend": {
-        "alignAsTable": true,
-        "avg": false,
-        "current": true,
-        "max": false,
-        "min": false,
-        "rightSide": true,
-        "show": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "null",
-      "paceLength": 10,
-      "percentage": false,
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "appInsights": {
-            "groupBy": "none",
-            "metricName": "select",
-            "rawQuery": false,
-            "rawQueryString": "",
-            "spliton": "",
-            "timeGrainType": "auto",
-            "xaxis": "timestamp",
-            "yaxis": ""
-          },
-          "azureLogAnalytics": {
-            "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
-            "resultFormat": "time_series",
-            "workspace": "502a68d4-d9e2-4132-8be8-b73119eb3361"
-          },
-          "azureMonitor": {
-            "aggOptions": [
-              "None",
-              "Average",
-              "Minimum",
-              "Maximum",
-              "Total",
-              "Count"
-            ],
-            "aggregation": "Total",
-            "alias": "{{resourcename}} {{dimensionvalue}}",
-            "dimension": "None",
-            "dimensionFilter": "*",
-            "dimensions": [
-              {
-                "text": "None",
-                "value": "None"
-              },
-              {
-                "text": "Instance",
-                "value": "Instance"
-              }
-            ],
-            "metricDefinition": "Microsoft.Web/sites",
-            "metricName": "CpuTime",
-            "resourceGroup": "{resourceGroupName}",
-            "resourceName": "{resourceName}",
-            "timeGrain": "auto",
-            "timeGrains": [
-              {
-                "text": "auto",
-                "value": "auto"
-              },
-              {
-                "text": "1 minute",
-                "value": "PT1M"
-              },
-              {
-                "text": "5 minutes",
-                "value": "PT5M"
-              },
-              {
-                "text": "15 minutes",
-                "value": "PT15M"
-              },
-              {
-                "text": "30 minutes",
-                "value": "PT30M"
-              },
-              {
-                "text": "1 hour",
-                "value": "PT1H"
-              },
-              {
-                "text": "6 hours",
-                "value": "PT6H"
-              },
-              {
-                "text": "12 hours",
-                "value": "PT12H"
-              },
-              {
-                "text": "1 day",
-                "value": "P1D"
-              }
-            ]
-          },
-          "queryType": "Azure Monitor",
-          "refId": "C"
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "CPU Time",
-      "tooltip": {
-        "shared": true,
-        "sort": 2,
-        "value_type": "individual"
-      },
-      "transparent": true,
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
+          "max": "100",
           "min": null,
           "show": true
         }
@@ -363,187 +222,20 @@
       "dashes": false,
       "datasource": "{dataSourceName}",
       "decimals": null,
-      "fill": 1,
-      "gridPos": {
-        "h": 9,
-        "w": 24,
-        "x": 0,
-        "y": 14
-      },
-      "id": 13,
-      "legend": {
-        "alignAsTable": true,
-        "avg": false,
-        "current": true,
-        "max": false,
-        "min": false,
-        "rightSide": true,
-        "show": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "null",
-      "paceLength": 10,
-      "percentage": false,
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "appInsights": {
-            "groupBy": "none",
-            "metricName": "select",
-            "rawQuery": false,
-            "rawQueryString": "",
-            "spliton": "",
-            "timeGrainType": "auto",
-            "xaxis": "timestamp",
-            "yaxis": ""
-          },
-          "azureLogAnalytics": {
-            "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
-            "resultFormat": "time_series",
-            "workspace": "502a68d4-d9e2-4132-8be8-b73119eb3361"
-          },
-          "azureMonitor": {
-            "aggOptions": [
-              "None",
-              "Average",
-              "Minimum",
-              "Maximum",
-              "Total",
-              "Count"
-            ],
-            "aggregation": "Average",
-            "alias": "{{resourcename}} {{dimensionvalue}}",
-            "dimension": "None",
-            "dimensionFilter": "*",
-            "dimensions": [
-              {
-                "text": "None",
-                "value": "None"
-              },
-              {
-                "text": "Instance",
-                "value": "Instance"
-              }
-            ],
-            "metricDefinition": "Microsoft.Web/sites",
-            "metricName": "AverageMemoryWorkingSet",
-            "resourceGroup": "{resourceGroupName}",
-            "resourceName": "{resourceName}",
-            "timeGrain": "auto",
-            "timeGrains": [
-              {
-                "text": "auto",
-                "value": "auto"
-              },
-              {
-                "text": "1 minute",
-                "value": "PT1M"
-              },
-              {
-                "text": "5 minutes",
-                "value": "PT5M"
-              },
-              {
-                "text": "15 minutes",
-                "value": "PT15M"
-              },
-              {
-                "text": "30 minutes",
-                "value": "PT30M"
-              },
-              {
-                "text": "1 hour",
-                "value": "PT1H"
-              },
-              {
-                "text": "6 hours",
-                "value": "PT6H"
-              },
-              {
-                "text": "12 hours",
-                "value": "PT12H"
-              },
-              {
-                "text": "1 day",
-                "value": "P1D"
-              }
-            ]
-          },
-          "queryType": "Azure Monitor",
-          "refId": "C"
-        }        
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Avg Memory Working Set",
-      "tooltip": {
-        "shared": true,
-        "sort": 2,
-        "value_type": "individual"
-      },
-      "transparent": true,
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "decbytes",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "decbytes",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "{dataSourceName}",
+      "description": "",
       "fill": 1,
       "gridPos": {
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 23
+        "y": 7
       },
-      "id": 10,
+      "id": 20,
       "legend": {
         "alignAsTable": true,
-        "avg": true,
+        "avg": false,
         "current": true,
-        "max": true,
+        "max": false,
         "min": false,
         "rightSide": true,
         "show": true,
@@ -554,9 +246,8 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "paceLength": 10,
       "percentage": false,
-      "pointradius": 5,
+      "pointradius": 2,
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [],
@@ -566,8 +257,37 @@
       "targets": [
         {
           "appInsights": {
-            "groupBy": "none",
-            "metricName": "select",
+            "aggOptions": [
+              "avg",
+              "min",
+              "max",
+              "count"
+            ],
+            "aggregation": "min",
+            "alias": "{{groupbyvalue}}",
+            "groupBy": "customDimensions/QueueName",
+            "groupByOptions": [
+              "performanceCounter/name",
+              "performanceCounter/category",
+              "performanceCounter/counter",
+              "performanceCounter/instance",
+              "operation/name",
+              "operation/synthetic",
+              "operation/syntheticSource",
+              "user/authenticated",
+              "application/version",
+              "client/type",
+              "client/model",
+              "client/os",
+              "client/city",
+              "client/stateOrProvince",
+              "client/countryOrRegion",
+              "client/browser",
+              "cloud/roleName",
+              "cloud/roleInstance",
+              "customDimensions/QueueName"
+            ],
+            "metricName": "performanceCounters/memoryAvailableBytes",
             "rawQuery": false,
             "rawQueryString": "",
             "spliton": "",
@@ -578,87 +298,89 @@
           "azureLogAnalytics": {
             "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
             "resultFormat": "time_series",
-            "workspace": "502a68d4-d9e2-4132-8be8-b73119eb3361"
+            "workspace": "f79b2607-d524-41e9-8812-b708a31e0469"
           },
           "azureMonitor": {
-            "aggOptions": [
-              "None",
-              "Average",
-              "Minimum",
-              "Maximum",
-              "Total",
-              "Count"
-            ],
-            "aggregation": "Average",
-            "alias": "{{resourcename}} {{dimensionvalue}}",
-            "dimension": "None",
+            "dimension": "",
             "dimensionFilter": "*",
-            "dimensions": [
-              {
-                "text": "None",
-                "value": "None"
-              },
-              {
-                "text": "Instance",
-                "value": "Instance"
-              }
-            ],
-            "metricDefinition": "Microsoft.Web/sites",
-            "metricName": "AverageResponseTime",
+            "dimensions": [],
+            "metricDefinition": "select",
+            "metricName": "select",
             "resourceGroup": "{resourceGroupName}",
             "resourceName": "{resourceName}",
-            "timeGrain": "auto",
-            "timeGrains": [
-              {
-                "text": "auto",
-                "value": "auto"
-              },
-              {
-                "text": "1 minute",
-                "value": "PT1M"
-              },
-              {
-                "text": "5 minutes",
-                "value": "PT5M"
-              },
-              {
-                "text": "15 minutes",
-                "value": "PT15M"
-              },
-              {
-                "text": "30 minutes",
-                "value": "PT30M"
-              },
-              {
-                "text": "1 hour",
-                "value": "PT1H"
-              },
-              {
-                "text": "6 hours",
-                "value": "PT6H"
-              },
-              {
-                "text": "12 hours",
-                "value": "PT12H"
-              },
-              {
-                "text": "1 day",
-                "value": "P1D"
-              }
-            ]
+            "timeGrain": "auto"
           },
-          "queryType": "Azure Monitor",
-          "refId": "C"
-        }        
+          "queryType": "Application Insights",
+          "refId": "A"
+        },
+        {
+          "appInsights": {
+            "aggOptions": [
+              "avg",
+              "min",
+              "max",
+              "count"
+            ],
+            "aggregation": "max",
+            "alias": "Max Memory - {{groupbyvalue}}",
+            "groupBy": "customDimensions/QueueName",
+            "groupByOptions": [
+              "performanceCounter/name",
+              "performanceCounter/category",
+              "performanceCounter/counter",
+              "performanceCounter/instance",
+              "operation/name",
+              "operation/synthetic",
+              "operation/syntheticSource",
+              "user/authenticated",
+              "application/version",
+              "client/type",
+              "client/model",
+              "client/os",
+              "client/city",
+              "client/stateOrProvince",
+              "client/countryOrRegion",
+              "client/browser",
+              "cloud/roleName",
+              "cloud/roleInstance",
+              "customDimensions/QueueName"
+            ],
+            "metricName": "performanceCounters/processPrivateBytes",
+            "rawQuery": false,
+            "rawQueryString": "",
+            "spliton": "",
+            "timeGrainType": "auto",
+            "xaxis": "timestamp",
+            "yaxis": ""
+          },
+          "azureLogAnalytics": {
+            "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
+            "resultFormat": "time_series",
+            "workspace": "f79b2607-d524-41e9-8812-b708a31e0469"
+          },
+          "azureMonitor": {
+            "dimension": "",
+            "dimensionFilter": "*",
+            "dimensions": [],
+            "metricDefinition": "select",
+            "metricName": "select",
+            "resourceGroup": "{resourceGroupName}",
+            "resourceName": "{resourceName}",
+            "timeGrain": "auto"
+          },
+          "hide": false,
+          "queryType": "Application Insights",
+          "refId": "B"
+        }
       ],
       "thresholds": [],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "AVG Response Time",
+      "title": "Worker Roles - Available Memory",
       "tooltip": {
         "shared": true,
-        "sort": 2,
+        "sort": 0,
         "value_type": "individual"
       },
       "transparent": true,
@@ -672,7 +394,8 @@
       },
       "yaxes": [
         {
-          "format": "s",
+          "decimals": null,
+          "format": "decbytes",
           "label": null,
           "logBase": 1,
           "max": null,
@@ -680,7 +403,151 @@
           "show": true
         },
         {
-          "format": "s",
+          "decimals": null,
+          "format": "decbytes",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": true,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "{dataSourceName}",
+      "fill": 1,
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 14
+      },
+      "id": 24,
+      "legend": {
+        "alignAsTable": true,
+        "avg": false,
+        "current": true,
+        "max": false,
+        "min": false,
+        "rightSide": true,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": false,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "appInsights": {
+            "aggOptions": [
+              "avg",
+              "min",
+              "max",
+              "sum",
+              "count"
+            ],
+            "aggregation": "sum",
+            "alias": "{{groupbyvalue}}",
+            "groupBy": "customDimensions/QueueName",
+            "groupByOptions": [
+              "dependency/target",
+              "dependency/type",
+              "dependency/name",
+              "dependency/success",
+              "dependency/resultCode",
+              "dependency/performanceBucket",
+              "operation/name",
+              "operation/synthetic",
+              "operation/syntheticSource",
+              "user/authenticated",
+              "application/version",
+              "client/type",
+              "client/model",
+              "client/os",
+              "client/city",
+              "client/stateOrProvince",
+              "client/countryOrRegion",
+              "client/browser",
+              "cloud/roleName",
+              "cloud/roleInstance",
+              "customDimensions/_MS.ProcessedByMetricExtractors",
+              "customDimensions/QueueName"
+            ],
+            "metricName": "dependencies/duration",
+            "rawQuery": false,
+            "rawQueryString": "",
+            "spliton": "",
+            "timeGrain": "1",
+            "timeGrainType": "specific",
+            "timeGrainUnit": "minute",
+            "xaxis": "timestamp",
+            "yaxis": ""
+          },
+          "azureLogAnalytics": {
+            "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
+            "resultFormat": "time_series",
+            "workspace": "f79b2607-d524-41e9-8812-b708a31e0469"
+          },
+          "azureMonitor": {
+            "dimensionFilter": "*",
+            "metricDefinition": "select",
+            "metricName": "select",
+            "resourceGroup": "{resourceGroupName}",
+            "resourceName": "{resourceName}",
+            "timeGrain": "auto"
+          },
+          "queryType": "Application Insights",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Worker Roles - Dependencies Duration / Minute",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "ms",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "ms",
           "label": null,
           "logBase": 1,
           "max": null,
@@ -701,12 +568,12 @@
       "datasource": "{dataSourceName}",
       "fill": 1,
       "gridPos": {
-        "h": 9,
+        "h": 5,
         "w": 24,
         "x": 0,
-        "y": 30
+        "y": 22
       },
-      "id": 11,
+      "id": 25,
       "legend": {
         "alignAsTable": true,
         "avg": false,
@@ -722,9 +589,8 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "paceLength": 10,
       "percentage": false,
-      "pointradius": 5,
+      "pointradius": 2,
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [],
@@ -734,99 +600,71 @@
       "targets": [
         {
           "appInsights": {
-            "groupBy": "none",
-            "metricName": "select",
+            "aggOptions": [
+              "avg",
+              "min",
+              "max",
+              "count"
+            ],
+            "aggregation": "max",
+            "alias": "Exceptions - {{groupbyvalue}}",
+            "groupBy": "customDimensions/QueueName",
+            "groupByOptions": [
+              "performanceCounter/name",
+              "performanceCounter/category",
+              "performanceCounter/counter",
+              "performanceCounter/instance",
+              "operation/name",
+              "operation/synthetic",
+              "operation/syntheticSource",
+              "user/authenticated",
+              "application/version",
+              "client/type",
+              "client/model",
+              "client/os",
+              "client/city",
+              "client/stateOrProvince",
+              "client/countryOrRegion",
+              "client/browser",
+              "cloud/roleName",
+              "cloud/roleInstance",
+              "customDimensions/QueueName"
+            ],
+            "metricName": "performanceCounters/exceptionsPerSecond",
             "rawQuery": false,
             "rawQueryString": "",
             "spliton": "",
-            "timeGrainType": "auto",
+            "timeGrain": "1",
+            "timeGrainType": "specific",
+            "timeGrainUnit": "minute",
             "xaxis": "timestamp",
             "yaxis": ""
           },
           "azureLogAnalytics": {
             "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
             "resultFormat": "time_series",
-            "workspace": "502a68d4-d9e2-4132-8be8-b73119eb3361"
+            "workspace": "f79b2607-d524-41e9-8812-b708a31e0469"
           },
           "azureMonitor": {
-            "aggOptions": [
-              "None",
-              "Average",
-              "Minimum",
-              "Maximum",
-              "Total",
-              "Count"
-            ],
-            "aggregation": "Total",
-            "alias": "{{resourcename}} {{dimensionvalue}}",
-            "dimension": "None",
             "dimensionFilter": "*",
-            "dimensions": [
-              {
-                "text": "None",
-                "value": "None"
-              },
-              {
-                "text": "Instance",
-                "value": "Instance"
-              }
-            ],
-            "metricDefinition": "Microsoft.Web/sites",
-            "metricName": "Requests",
+            "metricDefinition": "select",
+            "metricName": "select",
             "resourceGroup": "{resourceGroupName}",
             "resourceName": "{resourceName}",
-            "timeGrain": "PT1M",
-            "timeGrains": [
-              {
-                "text": "auto",
-                "value": "auto"
-              },
-              {
-                "text": "1 minute",
-                "value": "PT1M"
-              },
-              {
-                "text": "5 minutes",
-                "value": "PT5M"
-              },
-              {
-                "text": "15 minutes",
-                "value": "PT15M"
-              },
-              {
-                "text": "30 minutes",
-                "value": "PT30M"
-              },
-              {
-                "text": "1 hour",
-                "value": "PT1H"
-              },
-              {
-                "text": "6 hours",
-                "value": "PT6H"
-              },
-              {
-                "text": "12 hours",
-                "value": "PT12H"
-              },
-              {
-                "text": "1 day",
-                "value": "P1D"
-              }
-            ]
+            "timeGrain": "auto"
           },
-          "queryType": "Azure Monitor",
-          "refId": "C"
-        }        
+          "queryType": "Application Insights",
+          "refId": "B"
+        }
       ],
       "thresholds": [],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Total Requests / Minute",
+      "title": "Worker Roles - Exceptions / Minute",
       "tooltip": {
         "shared": true,
-        "sort": 2,
+        "sort": 0,
         "value_type": "individual"
       },
       "transparent": true,
@@ -868,19 +706,20 @@
       "dashes": false,
       "datasource": "{dataSourceName}",
       "decimals": 0,
+      "description": "Average Message in Queue / minute",
       "fill": 1,
       "gridPos": {
-        "h": 7,
+        "h": 9,
         "w": 24,
         "x": 0,
-        "y": 39
+        "y": 27
       },
-      "id": 5,
+      "id": 26,
       "legend": {
         "alignAsTable": true,
         "avg": false,
         "current": true,
-        "max": true,
+        "max": false,
         "min": false,
         "rightSide": true,
         "show": true,
@@ -891,7 +730,6 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "paceLength": 10,
       "percentage": false,
       "pointradius": 2,
       "points": false,
@@ -915,7 +753,7 @@
           "azureLogAnalytics": {
             "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
             "resultFormat": "time_series",
-            "workspace": "f79b2607-d524-41e9-8812-b708a31e0469"
+            "workspace": "502a68d4-d9e2-4132-8be8-b73119eb3361"
           },
           "azureMonitor": {
             "aggOptions": [
@@ -927,8 +765,8 @@
               "Count"
             ],
             "aggregation": "Total",
-            "alias": "{{resourcename}} {{dimensionvalue}}",
-            "dimension": "None",
+            "alias": "Dead-letter Queue - {{dimensionvalue}}",
+            "dimension": "EntityName",
             "dimensionFilter": "*",
             "dimensions": [
               {
@@ -936,15 +774,15 @@
                 "value": "None"
               },
               {
-                "text": "Instance",
-                "value": "Instance"
+                "text": "EntityName",
+                "value": "EntityName"
               }
             ],
-            "metricDefinition": "Microsoft.Web/sites",
-            "metricName": "Http5xx",
+            "metricDefinition": "Microsoft.ServiceBus/namespaces",
+            "metricName": "SuccessfulRequests",
             "resourceGroup": "{resourceGroupName}",
             "resourceName": "{resourceName}",
-            "timeGrain": "auto",
+            "timeGrain": "PT5M",
             "timeGrains": [
               {
                 "text": "auto",
@@ -986,91 +824,7 @@
           },
           "queryType": "Azure Monitor",
           "refId": "A"
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Server Errors",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": 0,
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
         },
-        {
-          "decimals": 0,
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": true,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "{dataSourceName}",
-      "decimals": 0,
-      "fill": 1,
-      "gridPos": {
-        "h": 9,
-        "w": 12,
-        "x": 0,
-        "y": 46
-      },
-      "id": 7,
-      "legend": {
-        "alignAsTable": true,
-        "avg": false,
-        "current": true,
-        "max": false,
-        "min": false,
-        "rightSide": true,
-        "show": true,
-        "total": false,
-        "values": true
-      },
-      "lines": false,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "null",
-      "paceLength": 10,
-      "percentage": false,
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
         {
           "appInsights": {
             "groupBy": "none",
@@ -1097,8 +851,8 @@
               "Count"
             ],
             "aggregation": "Total",
-            "alias": "{{resourcename}} {{dimensionvalue}}",
-            "dimension": "None",
+            "alias": "Incoming Requests - {{dimensionvalue}}",
+            "dimension": "EntityName",
             "dimensionFilter": "*",
             "dimensions": [
               {
@@ -1106,15 +860,15 @@
                 "value": "None"
               },
               {
-                "text": "Instance",
-                "value": "Instance"
+                "text": "EntityName",
+                "value": "EntityName"
               }
             ],
-            "metricDefinition": "Microsoft.Web/sites",
-            "metricName": "AppConnections",
+            "metricDefinition": "Microsoft.ServiceBus/namespaces",
+            "metricName": "IncomingRequests",
             "resourceGroup": "{resourceGroupName}",
             "resourceName": "{resourceName}",
-            "timeGrain": "auto",
+            "timeGrain": "PT5M",
             "timeGrains": [
               {
                 "text": "auto",
@@ -1155,14 +909,14 @@
             ]
           },
           "queryType": "Azure Monitor",
-          "refId": "C"
-        }        
+          "refId": "B"
+        }
       ],
       "thresholds": [],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Omnius Connections",
+      "title": "Service Bus - Requests",
       "tooltip": {
         "shared": true,
         "sort": 2,
@@ -1203,44 +957,48 @@
       }
     },
     {
-      "aliasColors": {},
-      "bars": true,
-      "dashLength": 10,
-      "dashes": false,
+      "columns": [],
       "datasource": "{dataSourceName}",
-      "decimals": 0,
-      "fill": 1,
+      "description": "Average Message in Queue / minute",
+      "fontSize": "100%",
       "gridPos": {
-        "h": 9,
+        "h": 20,
         "w": 12,
         "x": 12,
-        "y": 46
+        "y": 36
       },
-      "id": 9,
-      "legend": {
-        "alignAsTable": true,
-        "avg": false,
-        "current": true,
-        "max": false,
-        "min": false,
-        "rightSide": true,
-        "show": true,
-        "total": false,
-        "values": true
-      },
-      "lines": false,
-      "linewidth": 1,
+      "id": 16,
       "links": [],
-      "nullPointMode": "null",
-      "paceLength": 10,
-      "percentage": false,
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
+      "pageSize": null,
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 0,
+        "desc": true
+      },
+      "styles": [
+        {
+          "alias": "Time",
+          "dateFormat": "MM/DD/YY h:mm:ss a",
+          "link": false,
+          "pattern": "Time",
+          "type": "date"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 0,
+          "pattern": "/.*/",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        }
+      ],
       "targets": [
         {
           "appInsights": {
@@ -1268,8 +1026,8 @@
               "Count"
             ],
             "aggregation": "Total",
-            "alias": "{{resourcename}} {{dimensionvalue}}",
-            "dimension": "None",
+            "alias": "{{dimensionvalue}}",
+            "dimension": "EntityName",
             "dimensionFilter": "*",
             "dimensions": [
               {
@@ -1277,15 +1035,15 @@
                 "value": "None"
               },
               {
-                "text": "Instance",
-                "value": "Instance"
+                "text": "EntityName",
+                "value": "EntityName"
               }
             ],
-            "metricDefinition": "Microsoft.Web/sites",
-            "metricName": "AppConnections",
+            "metricDefinition": "Microsoft.ServiceBus/namespaces",
+            "metricName": "OutgoingMessages",
             "resourceGroup": "{resourceGroupName}",
             "resourceName": "{resourceName}",
-            "timeGrain": "auto",
+            "timeGrain": "PT5M",
             "timeGrains": [
               {
                 "text": "auto",
@@ -1327,228 +1085,95 @@
           },
           "queryType": "Azure Monitor",
           "refId": "A"
-        }        
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Omnius V2.0 Connections",
-      "tooltip": {
-        "shared": true,
-        "sort": 2,
-        "value_type": "individual"
-      },
-      "transparent": true,
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": 0,
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "decimals": 0,
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
         }
       ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "{dataSourceName}",
-      "decimals": null,
-      "fill": 1,
-      "gridPos": {
-        "h": 9,
-        "w": 24,
-        "x": 0,
-        "y": 55
-      },
-      "id": 12,
-      "legend": {
-        "alignAsTable": true,
-        "avg": false,
-        "current": false,
-        "max": true,
-        "min": false,
-        "rightSide": true,
-        "show": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "null",
-      "paceLength": 10,
-      "percentage": false,
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "appInsights": {
-            "groupBy": "none",
-            "metricName": "select",
-            "rawQuery": false,
-            "rawQueryString": "",
-            "spliton": "",
-            "timeGrainType": "auto",
-            "xaxis": "timestamp",
-            "yaxis": ""
-          },
-          "azureLogAnalytics": {
-            "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
-            "resultFormat": "time_series",
-            "workspace": "502a68d4-d9e2-4132-8be8-b73119eb3361"
-          },
-          "azureMonitor": {
-            "aggOptions": [
-              "None",
-              "Average",
-              "Minimum",
-              "Maximum",
-              "Total",
-              "Count"
-            ],
-            "aggregation": "Maximum",
-            "alias": "{{resourcename}} {{dimensionvalue}}",
-            "dimension": "None",
-            "dimensionFilter": "*",
-            "dimensions": [
-              {
-                "text": "None",
-                "value": "None"
-              },
-              {
-                "text": "Instance",
-                "value": "Instance"
-              }
-            ],
-            "metricDefinition": "Microsoft.Web/sites",
-            "metricName": "MemoryWorkingSet",
-            "resourceGroup": "{resourceGroupName}",
-            "resourceName": "{resourceName}",
-            "timeGrain": "auto",
-            "timeGrains": [
-              {
-                "text": "auto",
-                "value": "auto"
-              },
-              {
-                "text": "1 minute",
-                "value": "PT1M"
-              },
-              {
-                "text": "5 minutes",
-                "value": "PT5M"
-              },
-              {
-                "text": "15 minutes",
-                "value": "PT15M"
-              },
-              {
-                "text": "30 minutes",
-                "value": "PT30M"
-              },
-              {
-                "text": "1 hour",
-                "value": "PT1H"
-              },
-              {
-                "text": "6 hours",
-                "value": "PT6H"
-              },
-              {
-                "text": "12 hours",
-                "value": "PT12H"
-              },
-              {
-                "text": "1 day",
-                "value": "P1D"
-              }
-            ]
-          },
-          "queryType": "Azure Monitor",
-          "refId": "C"
-        }        
-      ],
-      "thresholds": [],
       "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Max Memory Working Set",
-      "tooltip": {
-        "shared": true,
-        "sort": 2,
-        "value_type": "individual"
-      },
+      "title": "Service Bus - Outgoing Messages",
+      "transform": "timeseries_to_columns",
       "transparent": true,
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "decbytes",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "decbytes",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
+      "type": "table"
     }
   ],
-  "refresh": "1m",
+  "refresh": "10s",
   "schemaVersion": 18,
   "style": "dark",
   "tags": [],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "current": {
+          "text": "ProductionMonitor",
+          "value": "ProductionMonitor"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "label": "Data Source",
+        "multi": false,
+        "name": "DataSource",
+        "options": [],
+        "query": "grafana-azure-monitor-datasource",
+        "refresh": 1,
+        "regex": "/.*(Monitor).*/",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": "Default-ServiceBus-WestUS",
+          "value": "Default-ServiceBus-WestUS"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "label": "Resource Group",
+        "multi": false,
+        "name": "ResourceGroup",
+        "options": [
+          {
+            "selected": false,
+            "text": "questsit",
+            "value": "questsit"
+          },
+          {
+            "selected": true,
+            "text": "Default-ServiceBus-WestUS",
+            "value": "Default-ServiceBus-WestUS"
+          }
+        ],
+        "query": "questsit,Default-ServiceBus-WestUS",
+        "skipUrlSync": false,
+        "type": "custom"
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": "omnius-prem",
+          "value": "omnius-prem"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "label": "Resource Name",
+        "multi": false,
+        "name": "ResourceName",
+        "options": [
+          {
+            "selected": false,
+            "text": "questsit-prem",
+            "value": "questsit-prem"
+          },
+          {
+            "selected": true,
+            "text": "omnius-prem",
+            "value": "omnius-prem"
+          }
+        ],
+        "query": "questsit-prem,omnius-prem",
+        "skipUrlSync": false,
+        "type": "custom"
+      }
+    ]
   },
   "time": {
     "from": "now-6h",
@@ -1580,6 +1205,6 @@
     ]
   },
   "timezone": "",
-  "title": "{environment} Web Apps",
-  "version": 2
+  "title": "{environment} Worker Roles",
+  "version": 23
 }
