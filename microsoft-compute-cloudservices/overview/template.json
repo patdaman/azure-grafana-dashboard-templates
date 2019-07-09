@@ -3,7 +3,7 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": "{azureMonitorDataSource}",
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
@@ -24,7 +24,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "$DataSource",
+      "datasource": "{azureMonitorDataSource}",
       "fill": 1,
       "gridPos": {
         "h": 7,
@@ -220,7 +220,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "$DataSource",
+      "datasource": "{azureMonitorDataSource}",
       "decimals": null,
       "description": "",
       "fill": 1,
@@ -422,7 +422,7 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "$DataSource",
+      "datasource": "{azureMonitorDataSource}",
       "fill": 1,
       "gridPos": {
         "h": 8,
@@ -565,7 +565,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "$DataSource",
+      "datasource": "{azureMonitorDataSource}",
       "fill": 1,
       "gridPos": {
         "h": 5,
@@ -704,7 +704,7 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "$DataSource",
+      "datasource": "{azureMonitorDataSource}",
       "decimals": 0,
       "description": "Average Message in Queue / minute",
       "fill": 1,
@@ -958,7 +958,7 @@
     },
     {
       "columns": [],
-      "datasource": "$DataSource",
+      "datasource": "{azureMonitorDataSource}",
       "description": "Average Message in Queue / minute",
       "fontSize": "100%",
       "gridPos": {
